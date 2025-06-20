@@ -1,80 +1,368 @@
 ---
-title: Put main title here
-subtitle: Sub-title goes here
-format: clean-revealjs
-
+title: Introduction to Generative AI
+subtitle: From foundational models to GenAI systems
+format: 
+  clean-revealjs:
+    self-contained: true
 html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 author:
-  - name: Dr Daniel Kapitan
+  - name: Daniel Kapitan
     orcid: 0000-0001-8979-9194
-    email: daniel@kapitan.net
-    affiliations: Eindhoven AI Systems Institute
+    email: d.kapitan@tue.nl
+    affiliations: Eindhoven AI Systems Institue
 date: last-modified
-
 ---
 
-## Attribution & copyright notice
-
-::: {style="font-size: 80%;"}
-
-This lecture is based on the following open access materials:
-
-- Voltron Data, [The Composable Codex](https://voltrondata.com/codex/a-new-frontier)
-- Cody Peterson, [Modern, hybrid, open analytics](https://anthology-of-data.science/posts/ibis-analytics/)
-- Thierry Jean, [Portable dataflows with Ibis and Hamilton](https://anthology-of-data.science/posts/hamilton-ibis/)
-- Documentation of the following Python libraries: [DuckDB](https://duckdb.org/docs/), [Ibis](https://ibis-project.org), [hamilton](https://github.com/dagworks-inc/hamilton), [polars](https://docs.pola.rs/), [Shiny for Python](https://shiny.posit.co/py/)
-
-Source code: [https://github.com/anthology-of-data-science/lecture-composable-data-stack](https://github.com/anthology-of-data-science/lecture-composable-data-stack)
-
-```{=html}
-<p xmlns:cc="http://creativecommons.org/ns#" >Daniel Kapitan, <em>Modern, open and downward-scaleable data engineering</em>.<br>This work is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></p>
-```
-:::
-
-## Learning objectives
+## Attribution
 
 <br>
 
-:::: {.columns style="font-size: 80%;"}
+-   Jakub M. Tomczak, [*Deep Generative Modeling, 2nd Edition*](https://jmtomczak.github.io/dgm_book.html) (2024)
+-   Jay Alammar & Maarten Grootendorst, [*Hands-On Large Language Models*](https://github.com/HandsOnLLM/Hands-On-Large-Language-Models) (2024)
+-   [Babak Esmaeli](https://babak0032.github.io/) provided the idea of Plato's cave for explaining latent variables
 
+# Generative Modeling
+## The need for generative models
+### Adding noise that humans can't see, can trip the model badly
+
+<br> ![](images/adverserial-attack.png)
+
+## The need for generative models
+### We need better techniques for quantifying uncertainty
+
+<br> ![](images/discriminative-vs-generative.png)
+
+::: notes
+-   Discriminative models only draw decision boundaries, generative reconstruct underlying distribution
+-   New data `X` lies far from bulk of training data, hence prediction is uncertain
+    -   Discriminitative model can't 'see' this
+    -   Generative model will show that $p(x)$ is low
+:::
+
+## The core rules of probability theory
+
+<br>
+
+::: columns
 ::: {.column width="50%"}
+### The product rule
 
-### Understand the problem
+$$
+\begin{align}
+p(x, y) & = p(x|y)p(y) \newline
+& = p(y|x)p(x)
+\end{align}
+$$
 
-- how data platforms evolved in the past couple of decades
-- current problems with data platforms
-- what concepts underlie the composable data stack
-- what concepts underlie modern data engineering workflows
-
+*This is in fact Bayes' rule written differently*
 :::
 
 ::: {.column width="50%"}
+### The sum rule
 
-### Know how to
+$$ p(x) = \sum_y p(x, y)$$
+:::
+:::
 
-- Build end-to-end data pipeline using open source implementations of the composable data stack
-- Apply best practices of functional data engineering
-- Apply the split-apply-combine strategy with various syntaxes
+## Overview of Generative AI
 
+<br>
+
+::: columns
+::: {.column width="50%"}
+![](images/generative-ai-overview.png){width="400"}
+:::
+
+::: {.column width="50%"}
+-   Deep learning provides [architecture]{.alert} for parameterizing the model
+-   Probabilistic modeling provides [mathematical foundation]{.alert} for the model
+-   Software engineering provides [computing resources]{.alert} for implementing the model
+:::
+:::
+
+## Taxonomy of Deep Generative Modeling
+
+::: columns
+::: {.column width="60%"}
+![](images/generative-ai-taxonomy.png){width="500"}
+:::
+
+::: {.column width="40%"}
+<br>
+
+-   We will cover **Autoregressive Models ARM)** and **Latent Variable Models**
+-   *Quiz: which type of model won the Nobel Prize in Physics in 2024?*
+:::
+:::
+
+# Autoregressive Models
+## Remember time-series forecasting?
+<br>
+
+::: {style="font-size: 80%;"}
+::: columns
+::: {.column width="50%"}
+### In statistics, econometrics, and signal processing, **an autoregressive model** {.smaller}
+
+-   is a representation of a type of **random process**
+-   can be used to describe **time-varying** processes in nature, economics, behavior, etc.
+-   specifies that the **output variable depends** linearly on its **own previous values** and on a stochastic term
+:::
+
+::: {.column width="50%"}
+### [Markov property](https://en.wikipedia.org/wiki/Markov_property):
+
+Stochastig process is memoryless, independent of its history:
+
+$$
+\begin{align}
+& P(\frac{\text{coding in Python is fun}}{\text{coding in Python is}}) \\
+& \approx P(\frac{\text{Python is fun}}{\text{Python is}})
+\end{align}
+$$
+:::
+:::
+:::
+
+## Autoregressive models with neural networks
+### Factorization of conditional probablities using product rule
+<br>
+
+::: {style="font-size: 85%;"}
+-   Say we have a variable $\mathbf{x}$ in $D$ dimensions and we want to model $p(\mathbf{x})$
+-   The conditional probablities can be written as: $$
+    p(\mathbf{x}) = p(x_1) \prod_{d=2}^{D} p(x_d | \mathbf{x}_{< d})
+    $$
+-   In case of three dimenions: $$
+    p(x1)p(x_2|x_1)p(x_3|x_1,x_2)
+    $$
+:::
+
+## Autoregressive models with neural networks
+
+### Reduce complexity: finite memory
+
+<br>
+
+-   to limit the complexity of a conditional model, assume a finite memory
+-   For instance, we can assume that each variable is dependent on no more than two other variables
+
+$$
+p(\mathbf{x}) = p(x_1) \prod_{d=3}^{D} p(x_d | x_{d-1}, x_{d-2})
+$$
+
+## Autoregressive models with neural networks
+
+### Multilayer perceptron (MLP) depending on two last inputs
+
+![](images/mlp-two-last-inputs.png)
+
+## Autoregressive models with neural networks
+### Long Short-Term Memory (LSTM) Recurrent Neural Networks
+<br>
+
+-   We want to have more long term memory, but still want to minimize the model's complexity
+-   LSTM RNN is a possible solution to this:
+
+$$
+p(\mathbf{x}) = p(x_1) \prod_{d=3}^{D} p(x_d | RNN(x_{d-1}, h_{d-1}))
+$$
+
+## Autoregressive models with neural networks
+### Recurrent Neural Network (RNN) depending on two last inputs
+
+![](images/mlp-rnn.png)
+
+## Autogressive models with neural networks
+### Discriminative vs. generative LSTM RNN ([Yogamata et. al (2017)](https://arxiv.org/pdf/1703.01898))
+
+![](images/rnn.png){width=100% fig-align="center"}
+
+::::: {style="font-size: 70%;"}
+:::: columns
+
+:::{.column width="50%" }
+Use-case: text classification
+
+- Predict document class $y$ for each sequence of words $x_1, x_2, ...$
+- Inputs are static embeddings of words
+- All outputs are combined into output, typically softmax activation function
+:::
+:::{.column width="50%"}
+Use-case: next token prediction
+
+- Same as before, but we add class embeddings $\mathbf{V}$
+- Note use of chain rule to calculate conditional probabilities for each word
+- Recursively use output of $x_{t-1}$ as input for $x_t$s
+:::
+::::
+:::::
+
+
+## The Transformer
+### Attention is all you need (source: [Jay Alammar](https://jalammar.github.io/illustrated-transformer/))
+<br>
+
+:::: columns
+::: {.column width="50%"}
+![](images/self-attention-simple.png)
+:::
+::: {.column width="50%"}
+![](images/self-attention-matrices.png)
 :::
 ::::
 
-::: {style="font-size: 80%;"}
-### Reflect
+## The Transformer
+### Attention is all you need (source: [Jay Alammar](https://jalammar.github.io/illustrated-transformer/))
 
-- on how this impact your (future) work as a data engineer
-- on the pro's and con's of open standards and open source
+:::: columns
+::: {.column width="50%"}
+![](images/self-attention-output.png)
+:::
+::: {.column width="50%" style="font-size: 80%;"}
+- Concept of __Query__, __Key__ and __Values__ is analogous to information retrieval in a database
+- Computation is 'just' matrix multiplication
+  - Can be run in parallel (multiple attention heads)
+  - Optimized software for matrix computations
+  - still, this is computationally the most expensive parts
+- Ongoing developments
+  - More efficient attention calculation
+  - Alternative architectures: XLSTM, state space models (SSM)
+:::
+::::
 
-::: 
+## The Transformer
+### Example sequence-to-sequence: translation (source: [Jay Alamar](https://jalammar.github.io/illustrated-transformer/))
 
+![](images/transformer_decoding_2.gif)
 
-# A new section
-## A new slide
-### Subtitle of new slide in new section
+# Latent Variable Models
+##
+![](images/plato1.png)
 
-- Today
-- ... is a beautiful day.
+::: notes
+Back to the main problem, how can the bounded observer learn a representation that is faithful to the object? There are multiple ways to approach this, but the one approach I want to focus on is through generative modeling. 
+:::
 
-## Thanks for your attention. {background-image="images/speakerscorner.jpg" background-size="contain" background-repeat="no-repeat"}
+## 
+![](images/plato2.png)
+
+::: notes
+Back to the main problem, how can the bounded observer learn a representation that is faithful to the object? There are multiple ways to approach this, but the one approach I want to focus on is through generative modeling. 
+:::
+
+## 
+![](images/plato3.png)
+
+::: notes
+Let’s extend this setting in the following way. Before being shown the shadow of this dove, the observer was shown a variety of different casted shadows for different objects and from different angles.  In the generative modeling approach, the bounded observer first has to understand the process of how the light projects a shadow when it shines through an object. That is to say, the bounded observer first has to think about and understand what is mapping from the object to the shadow.
+:::
+
+## 
+![](images/plato4.png)
+
+::: notes
+To model this in a probabilistic way, the observer has to think of two things.
+
+First, what is distribution over objects and their properties? So what do we believe about the types of objects that this other guy behind the wall has with him? It could be doves, cats, dogs, maybe doves of different breeds. We call distribution a prior. 
+:::
+
+## 
+![](images/plato5.png)
+
+::: notes
+Second, given an object, what is the distribution over possible casted shadows? We call this distribution the likelihood model.  Now of course in this example, we exactly know the physics behind the relationship between lights and shadows, but in general, this generative process is unknown to the observer and they have to learn this model. And note that this process also can be noisy.
+:::
+
+## 
+![](images/plato6.png)
+
+::: notes
+Once the observer has learned this model, they can go back to the original task which is given this shadow, what is the distribution over possible objects that could have casted this shadow? We can call this distribution the inference model and the reason we can call this inference model is that the observer has to infer this model by trying to reverse engineer the generative model described before.  
+:::
+
+## 
+
+![](images/plato7.png)
+
+::: notes
+VAEs roughly describes the learning process of this observer. In a VAE, we have a generative model that consists of a representation space that corresponds to the space of objects, or at least some abstract idea of an object, and a mapping from this space to the projection space and vice versa.
+
+We can jointly optimize these two models such that 1. the marginal distribution of our model over the shadows explains the shadows they have seen so far. 2. The inference distribution is exactly the inverse of the likelihood model.
+:::
+
+## The Autoencoder
+
+![](https://cradeq.b-cdn.net/carbon/datastudies/uploads/1ec51cb6-a314-41e1-9029-0cde4c76b759/autoencoder.jpg)
+
+## The Variational Autoencoder (VAE)
+
+![](https://cradeq.b-cdn.net/carbon/datastudies/uploads/21945d01-738b-4b41-b070-5a8613d12825/1_96ho7qSyW0nKrLvSoZHOtA.webp)
+
+## The Variational Autoencoder (VAE)
+
+![](https://cradeq.b-cdn.net/carbon/datastudies/uploads/4d37289f-6952-4f3c-bc56-5674b6260d01/vae.png)
+
+# Generative AI Systems
+## From models to systems
+<br>
+
+![](images/genai-system.png)
+
+## Intermezzo: getting the terminology right
+### Embeddings, encoders, decoders ...
+<br>
+
+- **Embeddings**: usually static [embedding](https://en.wikipedia.org/wiki/Word_embedding) like word2vec, always needed to transform text into vectors with _some_ context information
+- **Encoder**: a contextual embedding like BERT, often referred to as encoder-only transformer
+- **Decoder**: often the core of the generative AI system, with the decoder-only transformers (generative pre-trained transformer, GPT) as a well-known example
+
+## Retrieval Augmented Generation
+### Source: [Meta blogpost (2020)](https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/)
+
+{{< video https://youtu.be/6edwLJdMwT8 width="100%" height="80%">}}
+
+## ImaGen: Diffusion + Superresolution
+### Source: [Google DeepMind](https://papers.nips.cc/paper_files/paper/2022/hash/ec795aeadae0b7d230fa35cbaf04c041-Abstract-Conference.html)
+
+![](images/imagen.png)
+
+## ImaGen: Diffusion + Superresolution
+### Source: [Google DeepMind](https://papers.nips.cc/paper_files/paper/2022/hash/ec795aeadae0b7d230fa35cbaf04c041-Abstract-Conference.html)
+
+![](images/superresolution.png)
+
+# Examples from Texterous
+## Scraping job postings
+![](images/texterous-1.png)
+
+## Document retrieval: finding relevant grants
+![](images/texterous-2.png)
+
+## Education: lesson plan generator
+![](images/texterous-3.png)
+
+## Education: lesson plan generator
+![](images/texterous-4.png)
+
+# AlphaFold: predicting 3D structure of proteins
+## AlphaFold 2 in a nutshell
+
+{{< video https://youtu.be/7q8Uw3rmXyE?si=ZYSmXmbpsLuHft4u width="100%" height="85%" >}}
+
+## AlphaFold 2 architecture
+
+![](images/alphafold2.webp){fig-align="center"}
+
+## AlphaFold 3: prediction of nearly all molecular types in the Protein Data Bank
+
+![](images/alphafold3.webp){fig-align="center"}
+
+::: notes
+-   a, The pairformer module. Input and output: pair representation with dimension (n, n, c) and single representation with dimension (n, c). n is the number of tokens (polymer residues and atoms); c is the number of channels (128 for the pair representation, 384 for the single representation). Each of the 48 blocks has an independent set of trainable parameters.
+-   b, The diffusion module. Input: coarse arrays depict per-token representations (green, inputs; blue, pair; red, single). Fine arrays depict per-atom representations. The coloured balls represent physical atom coordinates. Cond., conditioning; rand. rot. trans., random rotation and translation; seq., sequence.
+-   c, The training set-up (distogram head omitted) starting from the end of the network trunk. The coloured arrays show activations from the network trunk (green, inputs; blue, pair; red, single). The blue arrows show abstract activation arrays. The yellow arrows show ground-truth data. The green arrows show predicted data. The stop sign represents stopping of the gradient. Both depicted diffusion modules share weights.
+-   d, Training curves for initial training and fine-tuning stages, showing the LDDT on our evaluation set as a function of optimizer steps. The scatter plot shows the raw datapoints and the lines show the smoothed performance using a median filter with a kernel width of nine datapoints. The crosses mark the point at which the smoothed performance reaches 97% of its initial training maximum.
+:::
