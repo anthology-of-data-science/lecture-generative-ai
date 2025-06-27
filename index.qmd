@@ -1,6 +1,6 @@
 ---
 title: Introduction to Generative AI
-subtitle: From foundational models to GenAI systems
+subtitle: From foundational models to GenAI systems and LLM agents
 format: 
   clean-revealjs:
     self-contained: true
