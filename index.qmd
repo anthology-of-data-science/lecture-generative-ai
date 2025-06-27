@@ -12,7 +12,7 @@ author:
     orcid: 0000-0001-8979-9194
     email: d.kapitan@tue.nl
     affiliations: Eindhoven AI Systems Institue
-date: 2024-12-05
+date: 2025-06-20
 ---
 
 ## Attribution
@@ -21,6 +21,7 @@ date: 2024-12-05
 
 -   Jakub M. Tomczak, [*Deep Generative Modeling, 2nd Edition*](https://jmtomczak.github.io/dgm_book.html) (2024)
 -   Jay Alammar & Maarten Grootendorst, [*Hands-On Large Language Models*](https://github.com/HandsOnLLM/Hands-On-Large-Language-Models) (2024)
+-   Maarten Grootendorst, [Visual Guide to LLM Agents](https://newsletter.maartengrootendorst.com/p/a-visual-guide-to-llm-agents) (2025)
 -   [Babak Esmaeli](https://babak0032.github.io/) provided the idea of Plato's cave for explaining latent variables
 
 # Generative Modeling
@@ -334,6 +335,122 @@ We can jointly optimize these two models such that 1. the marginal distribution 
 
 ![](images/superresolution.png)
 
+
+# LLM Agents
+## What is an agent?
+![](/images/agents-0.webp)
+
+:::{.notes}
+An agent is anything that can be viewed as perceiving its environment through sensors and acting upon that environment through actuators.
+
+— Russell & Norvig, AI: A Modern Approach (2016)
+:::
+
+## The "augmented LLM" as an agent
+![](/images/agents-1.webp)
+
+::: {.columns style="font-size: 60%;"}
+_Note people disagree with calling current state-of-the art agentic AI. You can decide yourself after the hands-on session._
+:::
+
+<br>
+
+## Why do we need augmentation?
+![](images/agents-5.webp)
+
+## The autonomy of your LLM agent depends on its design
+![](images/agents-6.webp)
+
+## The need for short-term memory
+![](images/agents-no-short-term-memory.webp)
+
+## The need for long-term memory
+![](images/agents-no-long-term-memory.webp)
+
+## Adding short and long-term memory
+![](images/agents-short-long-term-memory.png)
+
+:::{.notes}
+- Short term memory: just use context window, possibly with summary of previous input
+- Long term memory: vector database
+:::
+
+## Long-term memory with vector database
+
+::: {layout-ncol=2}
+![](images/long-term-memory-vectordb.png)
+
+![](images/long-term-memory-retrieval.png)
+:::
+
+## Using tools with LLMs
+
+::: {layout-nrow=2}
+![](images/agents-tools-1.png)
+
+![](images/agents-tools-2.png)
+:::
+
+## Different between procedural programming and agents
+<br>
+![](images/agents-tools-3.png)
+
+## Different between procedural programming and agents
+<br>
+![](images/agents-tools-4.png)
+
+## Model Context Protocol
+<br>
+![](images/agents-mcp.png)
+
+## Model Context Protocol
+<br>
+![](images/agents-mcp-architecture.png)
+
+## Reasoning with Chain-of-Thought
+![](images/agents-reasoning.png)
+
+## Reasoning and Acting
+<br>
+![](images/agents-reasoning-acting.png)
+
+## Adding reflection
+![](images/agents-reflection.png)
+
+## From single to multi-agents
+![](images/agents-multi-agent-1.png)
+
+## From single to multi-agents
+<br>
+![](images/agents-multi-agent-2.png)
+
+## Modular multi-agents frameworks
+![](images/agents-multi-agent-3.png)
+
+## Isabella: simulacra or simulation?
+<br>
+![](images/agents-simulacra-isabella.jpg)
+
+:::{.notes}
+- Simulacra are copies that depict things that either had no original, or that no longer have an original.
+- Simulation is the imitation of the operation of a real-world process or system over time.
+:::
+
+## Simulacra or simulation?
+![](images/agents-simulacra-1.png)
+
+## Simulacra or simulation?
+<br>
+![](images/agents-simulacra-2.png)
+
+## Frameworks in Python for building agentic AI apps
+- [CrewAI](https://docs.crewai.com/): a lean Python framework built entirely from scratch—completely independent of LangChain or other agent frameworks.
+- [Pydantic AI](https://ai.pydantic.dev/): a Python agent framework designed to make it less painful to build production grade applications with Generative AI. Plays nicely with the pydantic validation library.
+- [AutoGen](https://microsoft.github.io/autogen/stable//index.html): Microsoft's open-source programming framework for agentic AI
+- [Langgraph](https://langchain-ai.github.io/langgraph/): part of the LangChain stack
+- [type-ai/fenic](https://docs.fenic.ai/latest/): new kid on the block, backed by Wes McKinney
+  s
+
 # Examples from Texterous
 ## Scraping job postings
 ![](images/texterous-1.png)
@@ -353,11 +470,9 @@ We can jointly optimize these two models such that 1. the marginal distribution 
 {{< video https://youtu.be/7q8Uw3rmXyE?si=ZYSmXmbpsLuHft4u width="100%" height="85%" >}}
 
 ## AlphaFold 2 architecture
-
 ![](images/alphafold2.webp){fig-align="center"}
 
 ## AlphaFold 3: prediction of nearly all molecular types in the Protein Data Bank
-
 ![](images/alphafold3.webp){fig-align="center"}
 
 ::: notes
@@ -366,3 +481,5 @@ We can jointly optimize these two models such that 1. the marginal distribution 
 -   c, The training set-up (distogram head omitted) starting from the end of the network trunk. The coloured arrays show activations from the network trunk (green, inputs; blue, pair; red, single). The blue arrows show abstract activation arrays. The yellow arrows show ground-truth data. The green arrows show predicted data. The stop sign represents stopping of the gradient. Both depicted diffusion modules share weights.
 -   d, Training curves for initial training and fine-tuning stages, showing the LDDT on our evaluation set as a function of optimizer steps. The scatter plot shows the raw datapoints and the lines show the smoothed performance using a median filter with a kernel width of nine datapoints. The crosses mark the point at which the smoothed performance reaches 97% of its initial training maximum.
 :::
+
+## Thanks for your attention. {background-image="images/speakerscorner.jpg" background-size="contain" background-repeat="no-repeat"}
