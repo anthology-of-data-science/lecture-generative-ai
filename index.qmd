@@ -11,7 +11,7 @@ author:
   - name: Daniel Kapitan
     orcid: 0000-0001-8979-9194
     email: d.kapitan@tue.nl
-    affiliations: Eindhoven AI Systems Institue
+    affiliations: Eindhoven AI Systems Institute
 date: 2025-06-20
 ---
 
