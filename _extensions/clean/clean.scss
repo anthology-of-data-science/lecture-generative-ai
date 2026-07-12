@@ -13,7 +13,7 @@ $right-arrow: "\2192"; // Unicode character for right arrow
 /*
 Note: This theme uses the Roboto font family, which it imports from Google
   Fonts to ensure consistent weighting in addition to availability. While
-  you can use a local installation of Roboto, this is generally not 
+  you can use a local installation of Roboto, this is generally not
   recommended since the weighting will likely be wrong (probably too
   light). OTOH, importing from Google Fonts can cause some issues in
   certain secure environments due the external CDN (see:
@@ -67,7 +67,7 @@ $selection-bg: #26351c !default;
   }
 
   .subtitle {
-    color: $brand-warm-red;
+    color: $brand-mofo-red;
     font-style: italic;
     margin-top: 0em;
     font-weight: lighter;
@@ -107,7 +107,7 @@ $selection-bg: #26351c !default;
 }
 
 .reveal h3 {
-  color: $brand-warm-red;
+  color: $brand-mofo-red;
   font-style: italic;
   // font-weight: 350;
   font-weight: lighter;
@@ -115,7 +115,7 @@ $selection-bg: #26351c !default;
 }
 
 .reveal h4 {
-  color: $brand-dark-purple;
+  color: $brand-mofo-black;
   // font-weight: 350;
   font-weight: normal;
   margin-top: 1.25em;
@@ -124,7 +124,7 @@ $selection-bg: #26351c !default;
 // alerts etc.
 
 .alert {
-  color: $brand-dark-purple;
+  color: $brand-mofo-red;
 }
 
 .fg {
@@ -148,7 +148,7 @@ $selection-bg: #26351c !default;
   padding-left: 16px;
 
   li::marker {
-    color: mix($brand-warm-red, white, 70%);
+    color: mix($brand-mofo-red, white, 70%);
   }
 }
 
@@ -157,7 +157,7 @@ $selection-bg: #26351c !default;
 
   li:before {
     content: $right-arrow;
-    color: mix($brand-warm-red, white, 60%);
+    color: mix($brand-mofo-red, white, 60%);
     display: inline-block;
     width: 1em;
     margin-left: -1em;
@@ -173,7 +173,7 @@ $selection-bg: #26351c !default;
   padding-left: 16px;
 
   li::marker {
-    color: $brand-warm-red;
+    color: $brand-mofo-red;
   }
 }
 
@@ -243,8 +243,8 @@ $selection-bg: #26351c !default;
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
-  background-color: $brand-warm-red;
-  border: 1px solid $brand-warm-red;
+  background-color: $brand-mofo-red;
+  border: 1px solid $brand-mofo-red;
   color: #fff !important;
   text-decoration: none;
   border-radius: 4px;
@@ -317,7 +317,7 @@ $selection-bg: #26351c !default;
   object-fit: contain;
 }
 
-// Change the relative widths of `output-location: column`. 
+// Change the relative widths of `output-location: column`.
 // See: https://github.com/grantmcdermott/quarto-revealjs-clean/pull/16
 // Example usage:
 // ```{python}
@@ -343,10 +343,10 @@ $selection-bg: #26351c !default;
 }
 .reveal .columns4060 div.column:not(:first-child) {
   width: 60%;
-}      
+}
 .reveal .columns6040 > div.column:first-child {
   width: 60%;
 }
 .reveal .columns6040 div.column:not(:first-child) {
   width: 40%;
-}      
+}

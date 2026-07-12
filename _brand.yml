@@ -1,37 +1,38 @@
-meta:
-  name: Mozilla Brand
-  links:
-    home: https://mozilla.design/mozilla/
 color:
   palette:
-    # primary
-    neon-blue: "#00ffff"
-    lemon-yellow: "#fff44f"
-    warm-red: "#ff4f5e"
-    neon-green: "#54ffbd"
-    dark-purple: "#6e008b"
-    # secondary
-    dark-green: "#005e5e"
-    dark-blue: "#00458b"
-    dark-grey: "#959595"
-    light-grey: "#e7e5e2"
-  
-  background: white
-  foreground: black
-  primary: warm-red
-  secondary: light-grey
-  tertiary: dark-grey
-  success: dark-green
-  info: warm-red
-
-logo: 
-  medium: images/logo-eaisi-bw.png
-
+    mofo-black: "#161616"
+    mofo-red: "#D13109"
+    mofo-orange: "#F06C12"
+    mofo-yellow: "#EED800"
+    mofo-green: "#20C376"
+    mofo-blue: "#23A5E9"
+    mofo-cyan: "#7DEDF6"
+    mofo-paper: "#FAFAFA"
+    srdp-beige: "#F1ECE1"
+  foreground: mofo-black
+  background: mofo-paper
+  primary: mofo-red # links, controls, progress bar, list markers
 typography:
   fonts:
-    - family: Fira Sans
+    - family: Mozilla Headline
       source: google
-    - family: Zilla Slab
+    - family: Mozilla Text
+      weight: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      style: [normal, italic]
       source: google
-  base: Fira Sans
-  headings: Zilla Slab
+    - family: "Fira Code"
+      source: google
+  base:
+    family: Mozilla Text
+  headings:
+    family: Mozilla Headline
+    weight: 600
+    color: mofo-black
+  monospace:
+    family: "Fira Code"
+    color: mofo-blue
+  link:
+    color: mofo-red
+    decoration: none
+# logo:
+#   medium: logo-dk.png
